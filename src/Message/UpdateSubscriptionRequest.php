@@ -29,7 +29,7 @@ class UpdateSubscriptionRequest extends AbstractRequest
      */
     public function sendData($data)
     {
-        $response = $this->braintree->subscription()->update($data['subscriptionId'], $data);
+        $response = $this->braintree->subscription()->update($data['subscriptionId'], $data['subscriptionData']);
 
         return $this->response = new SubscriptionResponse($this, $response);
     }
