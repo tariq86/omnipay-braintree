@@ -2,6 +2,9 @@
 
 namespace Omnipay\Braintree;
 
+use Braintree\Configuration as BraintreeConfiguration;
+use Braintree\Digest as BraintreeDigest;
+use Braintree\Version as BraintreeVersion;
 use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
@@ -10,6 +13,10 @@ class GatewayTest extends GatewayTestCase
      * @var Gateway
      */
     protected $gateway;
+    /**
+     * @var array
+     */
+    protected $options;
 
     public function setUp()
     {
@@ -26,174 +33,175 @@ class GatewayTest extends GatewayTestCase
     public function testFindCustomer()
     {
         $request = $this->gateway->findCustomer(1);
-        $this->assertInstanceOf('\Omnipay\Braintree\Message\FindCustomerRequest', $request);
-        $this->assertEquals(1, $request->getCustomerId());
+        static::assertInstanceOf(\Omnipay\Braintree\Message\FindCustomerRequest::class, $request);
+        static::assertEquals(1, $request->getCustomerId());
     }
 
     public function testAuthorize()
     {
         $request = $this->gateway->authorize(array('amount' => '10.00'));
-        $this->assertInstanceOf('Omnipay\Braintree\Message\AuthorizeRequest', $request);
-        $this->assertSame('10.00', $request->getAmount());
+        self::assertInstanceOf(\Omnipay\Braintree\Message\AuthorizeRequest::class, $request);
+        self::assertSame('10.00', $request->getAmount());
     }
 
     public function testCapture()
     {
         $request = $this->gateway->capture(array('amount' => '10.00'));
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CaptureRequest', $request);
-        $this->assertSame('10.00', $request->getAmount());
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CaptureRequest::class, $request);
+        self::assertSame('10.00', $request->getAmount());
     }
 
     public function testCreateCustomer()
     {
         $request = $this->gateway->createCustomer();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CreateCustomerRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CreateCustomerRequest::class, $request);
     }
 
     public function testDeleteCustomer()
     {
         $request = $this->gateway->deleteCustomer();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\DeleteCustomerRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\DeleteCustomerRequest::class, $request);
     }
 
     public function testUpdateCustomer()
     {
         $request = $this->gateway->updateCustomer();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\UpdateCustomerRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\UpdateCustomerRequest::class, $request);
     }
 
     public function testCreateMerchantAccount()
     {
         $request = $this->gateway->createMerchantAccount();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CreateMerchantAccountRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CreateMerchantAccountRequest::class, $request);
     }
-    
+
     public function testUpdateMerchantAccount()
     {
         $request = $this->gateway->updateMerchantAccount();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\UpdateMerchantAccountRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\UpdateMerchantAccountRequest::class, $request);
     }
 
     public function testCreatePaymentMethod()
     {
         $request = $this->gateway->createPaymentMethod();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CreatePaymentMethodRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CreatePaymentMethodRequest::class, $request);
     }
 
     public function testDeletePaymentMethod()
     {
         $request = $this->gateway->deletePaymentMethod();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\DeletePaymentMethodRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\DeletePaymentMethodRequest::class, $request);
     }
 
     public function testUpdatePaymentMethod()
     {
         $request = $this->gateway->updatePaymentMethod();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\UpdatePaymentMethodRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\UpdatePaymentMethodRequest::class, $request);
     }
 
     public function testPurchase()
     {
         $request = $this->gateway->purchase(array('amount' => '10.00'));
-        $this->assertInstanceOf('Omnipay\Braintree\Message\PurchaseRequest', $request);
-        $this->assertSame('10.00', $request->getAmount());
+        self::assertInstanceOf(\Omnipay\Braintree\Message\PurchaseRequest::class, $request);
+        self::assertSame('10.00', $request->getAmount());
     }
 
     public function testRefund()
     {
         $request = $this->gateway->refund(array('amount' => '10.00'));
-        $this->assertInstanceOf('Omnipay\Braintree\Message\RefundRequest', $request);
-        $this->assertSame('10.00', $request->getAmount());
+        self::assertInstanceOf(\Omnipay\Braintree\Message\RefundRequest::class, $request);
+        self::assertSame('10.00', $request->getAmount());
     }
 
     public function testReleaseFromEscrow()
     {
         $request = $this->gateway->releaseFromEscrow(array('transactionId' => 'abc123'));
-        $this->assertInstanceOf('Omnipay\Braintree\Message\ReleaseFromEscrowRequest', $request);
-        $this->assertSame('abc123', $request->getTransactionId());
+        self::assertInstanceOf(\Omnipay\Braintree\Message\ReleaseFromEscrowRequest::class, $request);
+        self::assertSame('abc123', $request->getTransactionId());
     }
 
     public function testVoid()
     {
         $request = $this->gateway->void();
-        $this->assertInstanceOf('Omnipay\Braintree\Message\VoidRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\VoidRequest::class, $request);
     }
 
     public function testFind()
     {
         $request = $this->gateway->find(array());
-        $this->assertInstanceOf('Omnipay\Braintree\Message\FindRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\FindRequest::class, $request);
     }
 
     public function testClientToken()
     {
         $request = $this->gateway->clientToken(array());
-        $this->assertInstanceOf('Omnipay\Braintree\Message\ClientTokenRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\ClientTokenRequest::class, $request);
     }
 
     public function testCreateSubscription()
     {
         $request = $this->gateway->createSubscription(array());
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CreateSubscriptionRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CreateSubscriptionRequest::class, $request);
     }
 
     public function testCancelSubscription()
     {
         $request = $this->gateway->cancelSubscription('1');
-        $this->assertInstanceOf('Omnipay\Braintree\Message\CancelSubscriptionRequest', $request);
+        self::assertInstanceOf(\Omnipay\Braintree\Message\CancelSubscriptionRequest::class, $request);
     }
 
     public function testParseNotification()
     {
-        if(\Braintree_Version::MAJOR >= 3) {
+        if (BraintreeVersion::MAJOR >= 3) {
             $xml = '<notification></notification>';
             $payload = base64_encode($xml);
-            $signature = \Braintree_Digest::hexDigestSha1(\Braintree_Configuration::privateKey(), $payload);
+            $signature = BraintreeDigest::hexDigestSha1(BraintreeConfiguration::privateKey(), $payload);
             $gatewayMock = $this->buildGatewayMock($payload);
             $gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest(), $gatewayMock);
             $params = array(
-                'bt_signature' => $payload.'|'.$signature,
+                'bt_signature' => $payload . '|' . $signature,
                 'bt_payload' => $payload
             );
             $request = $gateway->parseNotification($params);
-            $this->assertInstanceOf('\Braintree_WebhookNotification', $request);
+            self::assertInstanceOf(\Braintree\WebhookNotification::class, $request);
         } else {
             $xml = '<notification><subject></subject></notification>';
             $payload = base64_encode($xml);
-            $signature = \Braintree_Digest::hexDigestSha1(\Braintree_Configuration::privateKey(), $payload);
+            $signature = BraintreeDigest::hexDigestSha1(BraintreeConfiguration::privateKey(), $payload);
             $gatewayMock = $this->buildGatewayMock($payload);
             $gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest(), $gatewayMock);
             $params = array(
-                'bt_signature' => $payload.'|'.$signature,
+                'bt_signature' => $payload . '|' . $signature,
                 'bt_payload' => $payload
             );
             $request = $gateway->parseNotification($params);
-            $this->assertInstanceOf('\Braintree_WebhookNotification', $request);
+            self::assertInstanceOf(\Braintree\WebhookNotification::class, $request);
         }
     }
 
     /**
      * @param $payload
      *
-     * @return \Braintree_Gateway
+     * @return \Braintree\Gateway
      */
     protected function buildGatewayMock($payload)
     {
-        $configuration = $this->getMockBuilder('\Braintree_Configuration')
+        /** @var BraintreeConfiguration $configuration */
+        $configuration = $this->getMockBuilder(BraintreeConfiguration::class)
             ->disableOriginalConstructor()
             ->setMethods(array(
                 'assertHasAccessTokenOrKeys'
             ))
             ->getMock();
-        $configuration->expects($this->any())
+        $configuration
+            ->expects($this->any())
             ->method('assertHasAccessTokenOrKeys')
-            ->will($this->returnValue(null));
-
+            ->willReturn(null);
 
 
         $configuration->setPublicKey($payload);
 
-        \Braintree_Configuration::$global = $configuration;
-        return \Braintree_Configuration::gateway();
+        BraintreeConfiguration::$global = $configuration;
+        return BraintreeConfiguration::gateway();
     }
 }
