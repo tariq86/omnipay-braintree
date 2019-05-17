@@ -304,11 +304,39 @@ class Gateway extends AbstractGateway
      */
     public function cancelSubscription($subscriptionId)
     {
-        return $this->createRequest('\Omnipay\Braintree\Message\CancelSubscriptionRequest', array('id' => $subscriptionId));
+        return $this->createRequest(\Omnipay\Braintree\Message\CancelSubscriptionRequest::class, [
+            'id' => $subscriptionId
+        ]);
     }
 
     /**
-     * @return \Omnipay\Common\Message\PlansRequest
+     * Update a subscription with the given parameters
+     *
+     * @param string $subscriptionId
+     * @param array $parameters
+     * TODO add unit test for new method
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function updateSubscription($subscriptionId, array $parameters = [])
+    {
+        return $this->createRequest(\Omnipay\Braintree\Message\UpdateSubscriptionRequest::class, [
+            'id' => $subscriptionId,
+            'data' => $parameters
+        ]);
+    }
+
+    /**
+     * @param string $subscriptionId
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function getSubscription($subscriptionId)
+    {
+        // TODO implement getSubscription method
+    }
+
+    /**
+     * @return \Omnipay\Common\Message\AbstractRequest
      */
     public function plans()
     {
